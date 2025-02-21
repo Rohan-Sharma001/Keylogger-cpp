@@ -2,13 +2,27 @@
 #include <iostream>
 #include <fstream>
 #include <string>
+#include <chrono>
+#include <iomanip>
+#include <ctime>
+#include <sstream>
 
 std::ofstream outfile{"log.txt", std::ios::app};
 
+std::string currentTime() {
+    auto now = std::chrono::system_clock::now();
+    std::time_t now_t = std::chrono::system_clock::to_time_t(now);
+    std::tm localTime = *std::localtime(&now_t);
+
+    std::ostringstream timeStream;
+    timeStream << std::put_time(&localTime, "[%Y-%m-%d %H:%M:%S] ");
+    return timeStream.str();
+}
+
 void logg(std::string s) {
     if (outfile.is_open()) {
-        outfile << s << std::endl;
-        std::cout << s << std::endl;
+        outfile << currentTime() << s << std::endl;
+        std::cout << currentTime() << s << std::endl;
     }
 }
 
